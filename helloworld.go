@@ -1,0 +1,204 @@
+package main
+
+import (
+	"fmt"
+)
+
+const monthsinYear = 12
+
+const (
+	dayofChristmas = 12
+	firstdayofWeek = "Monday"
+	sunisHot       = true
+)
+
+func main() {
+	var student1 string        //type is a string
+	var student2 = "Spiderman" // type is inferred
+
+	var y int = 6
+	x := 2 //type is inferred
+
+	var a string = "hello"
+	var b int  // defualt value is 0
+	var c bool // default value is false
+
+	fmt.Println("Hello World!")
+	fmt.Println(student2)
+	fmt.Println(y)
+	fmt.Println(x)
+	// default values of different types
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(c)
+
+	student1 = "Keanu"
+	fmt.Println(student1)
+
+	var e, f, g, h int = 1, 3, 5, 7
+
+	fmt.Println(e, f, g, h)
+
+	var (
+		j int    = 1
+		k string = "hello"
+	)
+
+	fmt.Println(j, k)
+	fmt.Println(a)
+	/*
+	   How const syntax is structured
+
+	   const constname type = value
+
+	*/
+
+	const PI = 3.14
+
+	fmt.Println(PI)
+	fmt.Println(monthsinYear)
+	fmt.Println(PI * monthsinYear)
+	fmt.Println(sunisHot, dayofChristmas, firstdayofWeek)
+
+	fmt.Print(a)
+	fmt.Print(b, "\n")
+	// "\n" for new line, otherwise it starts on same line as it finished
+	fmt.Print(a, "\n")
+	fmt.Print(b, "\n")
+	// you can call in same function with commas
+	fmt.Print(a, " ", b, "\n")
+	// print() will put a space in between 2 ints or if niether are string
+	fmt.Print(f, g, "\n")
+
+	// println() adds whitespace and a new line is added at the end
+
+	// printf() = %v is the value of the variable and the %T is the type of the variable
+	fmt.Printf("a has value: %v and type: %T\n", a, a)
+	fmt.Printf("e has value: %v and type: %T\n", e, e)
+	fmt.Printf("sunisHot has value: %v and type: %T\n", sunisHot, sunisHot)
+
+	/*
+	   %v prints the value in default format
+	   %#v prints the value in go syntax
+	   %T tpye of value
+	   %% prints the % sign
+	*/
+
+	var v = 15.5
+	var txt = "Testing"
+
+	fmt.Printf("%v\n", v)
+	fmt.Printf("%#v\n", v)
+	fmt.Printf("%v%%\n", v)
+	fmt.Printf("%T\n", v)
+
+	fmt.Printf("%v\n", txt)
+	fmt.Printf("%#v\n", txt)
+	fmt.Printf("%T\n", txt)
+
+	/*
+	   %b base 2
+	   %d base 10
+	   %+d base10 and always show sign
+	   %o base 8
+	   %O base 8 with leding 0o
+	   %x base 16 lowercase
+	   %X base 16 uppercase
+	   %#x base 16 with leading 0x
+	   %4d pad with spaces (width 4, right)
+	   %-4d pad with spaces (width 4, left)
+	   %04d pad with zeores (wifth 4)
+	*/
+
+	var u = 15
+
+	fmt.Printf("%b\n", u)
+	fmt.Printf("%d\n", u)
+	fmt.Printf("%+d\n", u)
+	fmt.Printf("%o\n", u)
+	fmt.Printf("%O\n", u)
+	fmt.Printf("%x\n", u)
+	fmt.Printf("%X\n", u)
+	fmt.Printf("%#x\n", u)
+	fmt.Printf("%4d\n", u)
+	fmt.Printf("%-4d\n", u)
+	fmt.Printf("%04d\n", u)
+
+	/*
+	   %s plain string
+	   %q double quoted string
+	   %8s value as plain string (width 8 right)
+	   %-8s value as plain string (width 8 left)
+	   %x hex dump of byte values
+	   % x hex dump with spaces
+	*/
+
+	var test = "hello"
+
+	fmt.Printf("%s\n", test)
+	fmt.Printf("%q\n", test)
+	fmt.Printf("%8s\n", test)
+	fmt.Printf("%-8s\n", test)
+	fmt.Printf("%x\n", test)
+	fmt.Printf("% x\n", test)
+
+	// %t value of boolean operator
+
+	var w = true
+	var q = false
+
+	fmt.Printf("%t\n", w)
+	fmt.Printf("%t\n", q)
+
+	/*
+	   %e Scientific notation with 'e' as exponent
+	   %f Decimal point, no exponent
+	   %.2f Default width, precision 2
+	   %6.2f Width 6, precision 2
+	   %g Exponent as needed, only necessary digits
+	*/
+
+	var i = 3.141
+
+	fmt.Printf("%e\n", i)
+	fmt.Printf("%f\n", i)
+	fmt.Printf("%.2f\n", i)
+	fmt.Printf("%6.2f\n", i)
+	fmt.Printf("%g\n", i)
+
+	var aa bool = true
+	var ab int = 5
+	var ac float32 = 3.14
+	var ad string = "string"
+
+	fmt.Println("Boolean: ", aa)
+	fmt.Println("Integer: ", ab)
+	fmt.Println("Float: ", ac)
+	fmt.Println("String: ", ad)
+
+	// declare an array with var
+	var array_test = [5]int{6, 7, 8, 9, 10}
+	fmt.Println(array_test)
+
+	var arr1 = []int{1, 2, 3, 4, 5}
+	fmt.Println(arr1)
+
+	// interchangeable with string and int
+
+	var prices = []int{10, 20, 30}
+	// accessing the array
+	fmt.Println(prices[0])
+
+	// changing the array
+	prices[2] = 60
+	fmt.Println(prices)
+
+	// if length is specified and values havent been assigned fully then it will go to the default value of that type
+	var arr2 = [5]int{}              //not initialized
+	var arr3 = [5]int{1, 2}          //partially initialized
+	var arr4 = [5]int{1, 2, 3, 4, 5} //fully initialized
+
+	fmt.Println(arr2)
+	fmt.Println(arr3)
+	fmt.Println(arr4)
+}

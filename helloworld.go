@@ -201,4 +201,105 @@ func main() {
 	fmt.Println(arr2)
 	fmt.Println(arr3)
 	fmt.Println(arr4)
+
+	// only call the second and 3rd int in the 5 length array
+	var arr5 = [5]int{1: 10, 2: 40}
+
+	fmt.Println(arr5)
+
+	// len() function is used to find the length
+	var arr6 = []string{"Interstellar", "Cars", "Superman", "Alien vs Predator"}
+
+	fmt.Println(len(arr1))
+	fmt.Println(arr6)
+	fmt.Println(len(arr6))
+
+	// go slice is similar to an array. slices can grow and shirnk as you see fit.
+
+	thickslice := []int{1, 2, 3}
+
+	// 2 functions to return length and capacity of a slice: len() and cap()
+
+	fmt.Println(len(thickslice))
+	fmt.Println(cap(thickslice))
+	fmt.Println(thickslice)
+
+	var thickarray = []int{10, 11, 12, 13, 14, 15}
+	thickerslice := thickarray[1:4]
+
+	fmt.Printf("slice = %v\n", thickerslice)
+
+	// when making, if you dont set capacity, it will default to length
+	myslice1 := make([]int, 5, 10)
+	fmt.Printf("myslice1 = %v\n", myslice1)
+	fmt.Printf("length = %d\n", len(myslice1))
+	fmt.Printf("capacity = %d\n", cap(myslice1))
+
+	// access slice via (slice[location])
+	fmt.Println(thickslice[0])
+
+	// change slice values
+
+	thickslice[0] = 30
+	fmt.Println(thickslice)
+
+	// append elemets to a slice. You need to add the ... in order to unpack the slice.
+	myslice2 := []int{1, 2, 3}
+	myslice3 := []int{4, 5, 6}
+	myslice := []int{700, 800, 900, 7}
+	myslice4 := append(myslice2, myslice3...)
+	fmt.Println(myslice4)
+	myslice4 = append(myslice4, myslice...)
+	fmt.Println(myslice4)
+
+	numbers := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
+	fmt.Println(numbers)
+	neededNumbers := numbers[:len(numbers)-10] // slice syntax, but start is omitted and end is the full len(numbers) - 10)
+	numbersCopy := make([]int, len(neededNumbers))
+	// copy(dst, src) where src is where teh numbers are coming from.
+	copy(numbersCopy, neededNumbers)
+
+	fmt.Println(numbersCopy)
+
+	// operator
+	var ba = 15 + 25
+	fmt.Println(ba)
+
+	var bb = ba + 40
+	fmt.Println(bb)
+
+	var bc = bb + 60
+	fmt.Println(bc)
+
+	// +, -, *, /, %, ++, --
+	var bd = bc - 10
+	fmt.Println(bd)
+
+	var be = bd * 2
+	fmt.Println(be)
+
+	var bf = be / 2
+	fmt.Println(bf)
+	// prints or holds the remainder value not the quotient
+	var bg = bf % 60
+	fmt.Println(bg)
+
+	ba++
+	fmt.Println(ba)
+
+	ba--
+	fmt.Println(ba)
+
+	bg += 10
+	fmt.Println(bg)
+
+	var r = 2
+	r ^= 3
+	fmt.Println(r)
+	r *= 3
+	fmt.Println(r)
+
+	// == equal to, != not equal, > greater than, < less than, >= greater than or equal to, <= less than or equal to
+	// && logical and will return boolean true if both statements are true, || logical or returns true if one of the statements is true, ! logical not reverse the result returns false if the result is true
+
 }

@@ -302,4 +302,73 @@ func main() {
 	// == equal to, != not equal, > greater than, < less than, >= greater than or equal to, <= less than or equal to
 	// && logical and will return boolean true if both statements are true, || logical or returns true if one of the statements is true, ! logical not reverse the result returns false if the result is true
 
+	// Go Conditions - a condition can either be true or false, < less than, > greater than, <= >=, == equal to, != not equal to.
+
+	var ta = 5
+	var tb = 4
+	var truthvalue = ta > tb
+	fmt.Println(truthvalue)
+	truthvalue = ta < tb
+	fmt.Println(truthvalue)
+	truthvalue = ta <= tb
+	fmt.Println(truthvalue)
+	truthvalue = ta >= tb
+	fmt.Println(truthvalue)
+	truthvalue = ta == tb
+	fmt.Println(truthvalue)
+	truthvalue = ta != tb
+	fmt.Println(truthvalue)
+
+	if ta < tb {
+		fmt.Println("a is larger than b")
+	} else {
+		fmt.Println("b is larger than a")
+	}
+
+	if ta == tb {
+		fmt.Println("samesies")
+	} else if ta < tb {
+		fmt.Println("smol boi")
+	} else {
+		fmt.Println("big boi")
+	}
+
+	if ta >= 2 {
+		fmt.Println("big boi")
+		if ta > tb {
+			fmt.Println("larger boi")
+		}
+	} else {
+		fmt.Println("smol")
+	}
+
+	day := 6
+
+	switch day {
+	case 1:
+		fmt.Println("Monday")
+	case 2:
+		fmt.Println("Tuesday")
+	case 3:
+		fmt.Println("Wednesday")
+	case 4:
+		fmt.Println("Thursday")
+	case 5:
+		fmt.Println("Friday")
+	case 6:
+		fmt.Println("Saturday")
+	case 7:
+		fmt.Println("Sunday")
+	default:
+		fmt.Println("Not a day in the week")
+	}
+
+	switch day {
+	case 1, 3, 5:
+		fmt.Println("Odd Day")
+	case 2, 4:
+		fmt.Println("Even Day")
+	case 6, 7:
+		fmt.Println("Weekend!")
+	}
 }

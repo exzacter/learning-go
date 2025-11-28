@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/exzacter/gorestapi/dbconfig"
 	"github.com/exzacter/gorestapi/internal/handlers"
 	"github.com/exzacter/gorestapi/internal/routes"
 	"github.com/exzacter/gorestapi/serverconfig"
@@ -18,6 +19,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load config %v", err)
 	}
+
+	// connect to the db from database folder
+	db := dbconfig.ConnectDB(config.DatabaseURL)
+	defer db.Close()
 
 	// thisis calling the core_handler which in future will hold our connections to DB and other things we are dependant on
 	handler := handlers.NewHandlers()

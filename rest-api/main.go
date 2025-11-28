@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 
+	"github.com/exzacter/gorestapi/internal/handlers"
+	"github.com/exzacter/gorestapi/internal/routes"
 	"github.com/exzacter/gorestapi/serverconfig"
 )
 
@@ -15,9 +17,11 @@ func main() {
 		log.Fatalf("Failed to load config %v", err)
 	}
 
+	handler := handlers.NewHandlers()
+
 	mux := http.NewServerMux()
 
-	mux.Handle("/")
+	routes.SetupRoutes(mux, handler)
 
 	serverAddr := fmt.Sprintf(":%s", config.ServerPort)
 	server := &http.Server(

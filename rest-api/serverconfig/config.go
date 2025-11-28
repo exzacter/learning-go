@@ -8,23 +8,23 @@ import (
 )
 
 type Config struct {
-	ServerPort string
+	ServerPort  string
 	DatabaseURL string
 	Environment string
-	LogLevel string
+	LogLevel    string
 }
 
 func loadConfig() (*config, error) {
-	if err := godotenv.Load(); err := nil {
+	if err := godotenv.Load(); err != nil {
 		return nil, fmt.Errorf("Error loading file: %v", err)
 	}
 
-	return &config {
-		ServerPort: getEnv("Server_PORT", "8080"),
-		DatabaseURL: getenv("DATABASE_URL", "postgres"),
+	return &config{
+		ServerPort:  getEnv("Server_PORT", "8080"),
+		DatabaseURL: getEnv("DATABASE_URL", "postgres"),
 		Environment: getEnv("ENVIRONMENT", "development"),
-		LogLevel: getEnv("LOG_LEVEL", "info")
-	}
+		LogLevel:    getEnv("LOG_LEVEL", "info"),
+	}, nil
 }
 
 func getEnv(key, defaultValue string) string {

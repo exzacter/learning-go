@@ -21,7 +21,7 @@ func loadConfig() (*config, error) {
 
 	return &config {
 		ServerPort: getEnv("Server_PORT", "8080"),
-		DatabaseURL: Getenv("DATABASE_URL", "postgres"),
+		DatabaseURL: getenv("DATABASE_URL", "postgres"),
 		Environment: getEnv("ENVIRONMENT", "development"),
 		LogLevel: getEnv("LOG_LEVEL", "info")
 	}

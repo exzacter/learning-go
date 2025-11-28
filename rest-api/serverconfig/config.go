@@ -14,13 +14,13 @@ type Config struct {
 	LogLevel    string
 }
 
-func loadConfig() (*config, error) {
+func LoadConfig() (*Config, error) {
 	if err := godotenv.Load(); err != nil {
 		return nil, fmt.Errorf("Error loading file: %v", err)
 	}
 
-	return &config{
-		ServerPort:  getEnv("Server_PORT", "8080"),
+	return &Config{
+		ServerPort:  getEnv("SERVER_PORT", "8080"),
 		DatabaseURL: getEnv("DATABASE_URL", "postgres"),
 		Environment: getEnv("ENVIRONMENT", "development"),
 		LogLevel:    getEnv("LOG_LEVEL", "info"),

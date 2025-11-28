@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-func (h *Handler) HealthHandler() http.HandlerFunc {
+func (h *Handler) TestHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		response := map[string]string{
-			"message": "Server is Okay",
+			"message": "Test curl has worked, handler is working for that function",
 		}
 
 		// encode the response as JSON and send back to client

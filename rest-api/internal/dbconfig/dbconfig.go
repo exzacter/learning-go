@@ -11,13 +11,13 @@ import (
 func ConnectDB(databaseURL string) *sql.DB {
 	db, err := sql.Open("postgres", databaseURL)
 	if err != nil {
-		log.Fatal("Failed to connect to db", err)
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Fatalf("Database connection failed: ", err)
+		log.Fatalf("Database connection failed: %v", err)
 	}
 
-	fmt.Println("Connected to db")
+	fmt.Println("Connected to the database successfully")
 	return db
 }

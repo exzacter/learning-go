@@ -10,47 +10,6 @@ import (
 	"database/sql"
 )
 
-const createBlog = `-- name: CreateBlog :one
-INSERT INTO blogs(title, content, user_id, created, updated)
-VALUES ($1, $2, $3, $4, $5)
-	RETURNING id, title, user_id, created, updated
-`
-
-type CreateBlogParams struct {
-	Title   string       `json:"title"`
-	Content string       `json:"content"`
-	UserID  int32        `json:"user_id"`
-	Created sql.NullTime `json:"created"`
-	Updated sql.NullTime `json:"updated"`
-}
-
-type CreateBlogRow struct {
-	ID      int32        `json:"id"`
-	Title   string       `json:"title"`
-	UserID  int32        `json:"user_id"`
-	Created sql.NullTime `json:"created"`
-	Updated sql.NullTime `json:"updated"`
-}
-
-func (q *Queries) CreateBlog(ctx context.Context, arg CreateBlogParams) (CreateBlogRow, error) {
-	row := q.queryRow(ctx, q.createBlogStmt, createBlog,
-		arg.Title,
-		arg.Content,
-		arg.UserID,
-		arg.Created,
-		arg.Updated,
-	)
-	var i CreateBlogRow
-	err := row.Scan(
-		&i.ID,
-		&i.Title,
-		&i.UserID,
-		&i.Created,
-		&i.Updated,
-	)
-	return i, err
-}
-
 const createUser = `-- name: CreateUser :one
 INSERT INTO users(username, email, password, created, updated)
 VALUES ($1, $2, $3, $4, $5)
@@ -119,40 +78,33 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (GetUserRow, error) {
 	return i, err
 }
 
-const listBlogs = `-- name: ListBlogs :many
-SELECT id, title, content, user_id, created, updated
-FROM blogs
-ORDER BY id
+const getUserByUsernameOrEmail = `-- name: GetUserByUsernameOrEmail :one
+SELECT id, username, email, created, updated, password
+FROM users
+WHERE username = $1 OR email = $1
 `
 
-func (q *Queries) ListBlogs(ctx context.Context) ([]Blog, error) {
-	rows, err := q.query(ctx, q.listBlogsStmt, listBlogs)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Blog{}
-	for rows.Next() {
-		var i Blog
-		if err := rows.Scan(
-			&i.ID,
-			&i.Title,
-			&i.Content,
-			&i.UserID,
-			&i.Created,
-			&i.Updated,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+type GetUserByUsernameOrEmailRow struct {
+	ID       int32        `json:"id"`
+	Username string       `json:"username"`
+	Email    string       `json:"email"`
+	Created  sql.NullTime `json:"created"`
+	Updated  sql.NullTime `json:"updated"`
+	Password string       `json:"password"`
+}
+
+func (q *Queries) GetUserByUsernameOrEmail(ctx context.Context, username string) (GetUserByUsernameOrEmailRow, error) {
+	row := q.queryRow(ctx, q.getUserByUsernameOrEmailStmt, getUserByUsernameOrEmail, username)
+	var i GetUserByUsernameOrEmailRow
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Email,
+		&i.Created,
+		&i.Updated,
+		&i.Password,
+	)
+	return i, err
 }
 
 const listUsers = `-- name: ListUsers :many

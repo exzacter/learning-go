@@ -14,3 +14,7 @@ func RespondWithError(w http.ResponseWriter, code int, message string) {
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(ErrorResponse{Message: message})
 }
+
+func RespondWithNotFound(w http.ResponseWriter) {
+	RespondWithError(w, http.StatusNotFound, "Resource not found")
+}

@@ -10,12 +10,12 @@ type Handler struct {
 	// DB instanc
 	DB *sql.DB
 	// Query stores
-	Queries store.Queries
+	Queries *store.Queries
 }
 
 func NewHandlers(db *sql.DB, queries *store.Queries) *Handler {
 	return &Handler{
 		DB:      db,
-		Queries: *queries,
+		Queries: queries,
 	}
 }

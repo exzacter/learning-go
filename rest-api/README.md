@@ -74,11 +74,10 @@ rest-api/
 │   │   ├── user.go
 │   │   └── README.md                # → Handler pattern explained
 │   ├── routes/                      # Route definitions
-│   │   ├── setup_routes.go
-│   │   ├── health_routes.go
-│   │   ├── test_routes.go
-│   │   ├── user_rotues.go
-│   │   └── README.md                # → Routing system explained
+│   │   ├── setup_routes.go         # Main route setup
+│   │   ├── health_routes.go        # Health route registration
+│   │   ├── test_routes.go          # Test route registration
+│   │   └── user_routes.go          # User route registration
 │   ├── store/                       # Database layer (sqlc generated)
 │   │   ├── db.go
 │   │   ├── models.go

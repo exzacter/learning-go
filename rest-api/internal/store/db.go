@@ -24,17 +24,14 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
-	if q.createBlogStmt, err = db.PrepareContext(ctx, createBlog); err != nil {
-		return nil, fmt.Errorf("error preparing query CreateBlog: %w", err)
-	}
 	if q.createUserStmt, err = db.PrepareContext(ctx, createUser); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateUser: %w", err)
 	}
 	if q.getUserStmt, err = db.PrepareContext(ctx, getUser); err != nil {
 		return nil, fmt.Errorf("error preparing query GetUser: %w", err)
 	}
-	if q.listBlogsStmt, err = db.PrepareContext(ctx, listBlogs); err != nil {
-		return nil, fmt.Errorf("error preparing query ListBlogs: %w", err)
+	if q.getUserByUsernameOrEmailStmt, err = db.PrepareContext(ctx, getUserByUsernameOrEmail); err != nil {
+		return nil, fmt.Errorf("error preparing query GetUserByUsernameOrEmail: %w", err)
 	}
 	if q.listUsersStmt, err = db.PrepareContext(ctx, listUsers); err != nil {
 		return nil, fmt.Errorf("error preparing query ListUsers: %w", err)
@@ -44,11 +41,6 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
-	if q.createBlogStmt != nil {
-		if cerr := q.createBlogStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing createBlogStmt: %w", cerr)
-		}
-	}
 	if q.createUserStmt != nil {
 		if cerr := q.createUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createUserStmt: %w", cerr)
@@ -59,9 +51,9 @@ func (q *Queries) Close() error {
 			err = fmt.Errorf("error closing getUserStmt: %w", cerr)
 		}
 	}
-	if q.listBlogsStmt != nil {
-		if cerr := q.listBlogsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing listBlogsStmt: %w", cerr)
+	if q.getUserByUsernameOrEmailStmt != nil {
+		if cerr := q.getUserByUsernameOrEmailStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getUserByUsernameOrEmailStmt: %w", cerr)
 		}
 	}
 	if q.listUsersStmt != nil {
@@ -106,23 +98,21 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db             DBTX
-	tx             *sql.Tx
-	createBlogStmt *sql.Stmt
-	createUserStmt *sql.Stmt
-	getUserStmt    *sql.Stmt
-	listBlogsStmt  *sql.Stmt
-	listUsersStmt  *sql.Stmt
+	db                           DBTX
+	tx                           *sql.Tx
+	createUserStmt               *sql.Stmt
+	getUserStmt                  *sql.Stmt
+	getUserByUsernameOrEmailStmt *sql.Stmt
+	listUsersStmt                *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:             tx,
-		tx:             tx,
-		createBlogStmt: q.createBlogStmt,
-		createUserStmt: q.createUserStmt,
-		getUserStmt:    q.getUserStmt,
-		listBlogsStmt:  q.listBlogsStmt,
-		listUsersStmt:  q.listUsersStmt,
+		db:                           tx,
+		tx:                           tx,
+		createUserStmt:               q.createUserStmt,
+		getUserStmt:                  q.getUserStmt,
+		getUserByUsernameOrEmailStmt: q.getUserByUsernameOrEmailStmt,
+		listUsersStmt:                q.listUsersStmt,
 	}
 }

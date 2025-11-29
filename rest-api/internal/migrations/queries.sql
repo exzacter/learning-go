@@ -13,13 +13,7 @@ SELECT id, username, email, created, updated
 FROM users
 ORDER BY id;
 
--- name: CreateBlog :one
-INSERT INTO blogs(title, content, user_id, created, updated)
-VALUES ($1, $2, $3, $4, $5)
-	RETURNING id, title, user_id, created, updated;
-
--- name: ListBlogs :many
-SELECT id, title, content, user_id, created, updated
-FROM blogs
-ORDER BY id;
-
+-- name: GetUserByUsernameOrEmail :one
+SELECT id, username, email, created, updated, password
+FROM users
+WHERE username = $1 OR email = $1;

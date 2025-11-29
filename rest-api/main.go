@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/exzacter/gorestapi/dbconfig"
+	"github.com/exzacter/gorestapi/internal/dbconfig"
 	"github.com/exzacter/gorestapi/internal/handlers"
 	"github.com/exzacter/gorestapi/internal/routes"
+	"github.com/exzacter/gorestapi/internal/serverconfig"
 	"github.com/exzacter/gorestapi/internal/store"
-	"github.com/exzacter/gorestapi/serverconfig"
 )
 
 func main() {
@@ -25,6 +25,7 @@ func main() {
 	db := dbconfig.ConnectDB(config.DatabaseURL)
 	defer db.Close()
 
+	// initialises sqlc queries
 	queries := store.New(db)
 
 	// thisis calling the core_handler which in future will hold our connections to DB and other things we are dependant on
@@ -44,9 +45,9 @@ func main() {
 		Handler: mux,
 	}
 
-	fmt.Printf("Server has been started on port %s\n", serverAddr)
+	fmt.Printf("Server has been started on %s\n", serverAddr)
 
-	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("server failed %v", err)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("Server failed %v", err)
 	}
 }

@@ -43,7 +43,7 @@ rest-api/
 │   │   ├── errorresponse.go        # Standardized error responses
 │   │   └── successresponse.go      # Standardized success responses
 │   └── migrations/                  # Database migrations
-│       ├── schema.sql               # Database schema (users & blogs tables)
+│       ├── schema.sql               # Database schema
 │       └── queries.sql              # SQL queries for sqlc
 └── models/                          # Domain models
     ├── user.go
@@ -130,24 +130,6 @@ Benefits:
 - **Configuration Management**: Environment-based config with `.env` file
 - **Password Security**: Bcrypt hashing with default cost factor
 
-### Database Schema
-
-**Users Table:**
-- `id` (Serial Primary Key)
-- `username` (VARCHAR)
-- `email` (VARCHAR)
-- `password` (VARCHAR - hashed)
-- `created` (TIMESTAMP)
-- `updated` (TIMESTAMP)
-
-**Blogs Table** (schema exists, not yet implemented):
-- `id` (Serial Primary Key)
-- `title` (VARCHAR)
-- `content` (VARCHAR)
-- `user_id` (Foreign Key to users)
-- `created` (TIMESTAMP)
-- `updated` (TIMESTAMP)
-
 ## Setup & Running
 
 ### Prerequisites
@@ -201,107 +183,6 @@ curl -X POST http://localhost:8080/user/register \
 5. **Dependency Injection**: Handler struct holds DB and queries
 6. **Password Security**: Never store plain text passwords
 7. **Error Handling**: Proper HTTP status codes and error messages
-
-## TODO List
-
-### Authentication & Security
-- [ ] Implement user login endpoint
-- [ ] Add JWT token generation and validation
-- [ ] Create authentication middleware
-- [ ] Add refresh token functionality
-- [ ] Implement password reset flow
-- [ ] Add email verification
-- [ ] Rate limiting to prevent brute force attacks
-- [ ] Add CORS middleware for cross-origin requests
-
-### User Management
-- [ ] Get user profile endpoint (GET `/user/:id`)
-- [ ] Update user profile endpoint (PUT `/user/:id`)
-- [ ] Delete user endpoint (DELETE `/user/:id`)
-- [ ] List users with pagination (GET `/users?page=1&limit=10`)
-- [ ] User search functionality
-- [ ] Change password endpoint
-
-### Blog Functionality
-- [ ] Create blog post endpoint (POST `/blogs`)
-- [ ] Get single blog post (GET `/blogs/:id`)
-- [ ] List all blog posts with pagination (GET `/blogs`)
-- [ ] Update blog post (PUT `/blogs/:id`)
-- [ ] Delete blog post (DELETE `/blogs/:id`)
-- [ ] Get blogs by user (GET `/users/:id/blogs`)
-- [ ] Add blog categories/tags
-- [ ] Blog search functionality
-- [ ] Blog comments feature
-
-### Validation & Error Handling
-- [ ] Add request validation middleware
-- [ ] Validate email format
-- [ ] Validate password strength requirements
-- [ ] Add custom validation errors with field details
-- [ ] Centralized error logging
-- [ ] Better database error handling (unique constraint violations, etc.)
-
-### Middleware
-- [ ] Request logging middleware (log all requests)
-- [ ] Recovery middleware (panic recovery)
-- [ ] Request ID middleware for tracing
-- [ ] Response time tracking
-- [ ] Content-Type validation
-
-### Database & Queries
-- [ ] Add database migrations tool (like golang-migrate)
-- [ ] Implement soft deletes for users and blogs
-- [ ] Add database indexes for performance
-- [ ] Implement database transactions for complex operations
-- [ ] Add prepared statements caching
-- [ ] Connection pool optimization
-
-### Testing
-- [ ] Unit tests for handlers
-- [ ] Unit tests for utilities (password hashing, etc.)
-- [ ] Integration tests for API endpoints
-- [ ] Mock database for testing
-- [ ] Test coverage reporting
-- [ ] Load testing / benchmarks
-
-### Documentation
-- [ ] Add API documentation (Swagger/OpenAPI)
-- [ ] Document all environment variables
-- [ ] Add example requests/responses for all endpoints
-- [ ] Create Postman collection
-- [ ] Add architecture diagrams
-
-### Code Quality
-- [ ] Add linting configuration (golangci-lint)
-- [ ] Set up CI/CD pipeline
-- [ ] Add pre-commit hooks
-- [ ] Improve error messages for debugging
-- [ ] Add structured logging (replace fmt.Println)
-- [ ] Add health check for database connectivity
-
-### Performance & Scalability
-- [ ] Implement caching (Redis)
-- [ ] Add database query optimization
-- [ ] Implement pagination helpers
-- [ ] Add response compression
-- [ ] Query result caching
-
-### DevOps & Deployment
-- [ ] Create Dockerfile
-- [ ] Docker Compose for local development
-- [ ] Add health check endpoint improvements (DB status, memory, etc.)
-- [ ] Environment-specific configurations (dev, staging, prod)
-- [ ] Add graceful shutdown handling
-
-### Advanced Features
-- [ ] File upload for user avatars
-- [ ] File upload for blog images
-- [ ] Email service integration
-- [ ] WebSocket support for real-time features
-- [ ] API versioning strategy (v1, v2)
-- [ ] Admin panel endpoints
-- [ ] Role-based access control (RBAC)
-- [ ] OAuth integration (Google, GitHub login)
 
 ## Technologies Used
 

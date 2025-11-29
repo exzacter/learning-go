@@ -8,6 +8,7 @@ import (
 	"github.com/exzacter/gorestapi/dbconfig"
 	"github.com/exzacter/gorestapi/internal/handlers"
 	"github.com/exzacter/gorestapi/internal/routes"
+	"github.com/exzacter/gorestapi/internal/store"
 	"github.com/exzacter/gorestapi/serverconfig"
 )
 
@@ -24,8 +25,10 @@ func main() {
 	db := dbconfig.ConnectDB(config.DatabaseURL)
 	defer db.Close()
 
+	queries := store.New(db)
+
 	// thisis calling the core_handler which in future will hold our connections to DB and other things we are dependant on
-	handler := handlers.NewHandlers()
+	handler := handlers.NewHandlers(db, queries)
 
 	// mux or NewServeMux is the router. It maps the url path from the request and can point them to the function to handle it
 	mux := http.NewServeMux()

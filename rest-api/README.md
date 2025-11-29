@@ -31,7 +31,7 @@ rest-api/
 │   │   ├── setup_routes.go         # Main route setup
 │   │   ├── health_routes.go        # Health route registration
 │   │   ├── test_routes.go          # Test route registration
-│   │   └── user_rotues.go          # User route registration
+│   │   └── user_routes.go          # User route registration
 │   ├── store/                       # Database layer (sqlc generated)
 │   │   ├── db.go                   # Database interface & queries
 │   │   ├── models.go               # Database models

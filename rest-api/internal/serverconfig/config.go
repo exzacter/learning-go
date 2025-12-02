@@ -20,14 +20,14 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
-		ServerPort:  getEnv("SERVER_PORT", "8080"),
-		DatabaseURL: getEnv("DATABASE_URL", "postgres"),
-		Environment: getEnv("ENVIRONMENT", "development"),
-		LogLevel:    getEnv("LOG_LEVEL", "info"),
+		ServerPort:  GetEnv("SERVER_PORT", "8080"),
+		DatabaseURL: GetEnv("DATABASE_URL", "postgres"),
+		Environment: GetEnv("ENVIRONMENT", "development"),
+		LogLevel:    GetEnv("LOG_LEVEL", "info"),
 	}, nil
 }
 
-func getEnv(key, defaultValue string) string {
+func GetEnv(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}

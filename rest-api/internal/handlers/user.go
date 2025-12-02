@@ -164,7 +164,7 @@ func (h *Handler) LoginUserHandler() http.HandlerFunc {
 			return
 		}
 
-		if utils.ComparePassword(user.Password, req.Password) {
+		if !utils.ComparePassword(user.Password, req.Password) {
 			utils.RespondWithError(w, http.StatusUnauthorized, "invalid credentials - password wrong")
 			return
 		}

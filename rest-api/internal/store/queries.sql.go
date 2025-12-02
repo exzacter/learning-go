@@ -52,26 +52,19 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, email, created, updated
+SELECT id, username, email, password, created, updated
 FROM users
 WHERE id = $1
 `
 
-type GetUserRow struct {
-	ID       int32        `json:"id"`
-	Username string       `json:"username"`
-	Email    string       `json:"email"`
-	Created  sql.NullTime `json:"created"`
-	Updated  sql.NullTime `json:"updated"`
-}
-
-func (q *Queries) GetUser(ctx context.Context, id int32) (GetUserRow, error) {
+func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 	row := q.queryRow(ctx, q.getUserStmt, getUser, id)
-	var i GetUserRow
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
 		&i.Email,
+		&i.Password,
 		&i.Created,
 		&i.Updated,
 	)

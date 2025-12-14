@@ -7,8 +7,10 @@ import (
 	"strings"
 
 	"github.com/exzacter/gorestapi/internal/auth"
+	"github.com/exzacter/gorestapi/internal/dbconfig"
 	"github.com/exzacter/gorestapi/internal/utils"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/redis/go-redis/v9"
 )
 
 // creates custom type for context key to avoid collision
@@ -30,6 +32,16 @@ func AuthMiddle(next http.Handler) http.Handler {
 		// strips the Bearer string from the bearer token
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 		claims := &auth.Claims{}
+
+		// check redis for blacklisted token
+		blacklisted, err := dbconfig.RedisClient.Get(r.Context(), tokenString).Result()
+		if err == nil && blacklisted == "blacklisted" {
+			utils.RespondWithError(w, http.StatusUnauthorized, "Token revoked")
+			return
+		} else if err != nil && err != redis.Nil {
+			utils.RespondWithError(w, http.StatusInternalServerError, "Internal error")
+			return
+		}
 
 		// Parse the token and validating it
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {

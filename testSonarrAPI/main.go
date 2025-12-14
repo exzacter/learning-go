@@ -41,9 +41,13 @@ func (c *SonarrClient) GetAllSeries(ctx context.Context) (json.RawMessage, error
 	// %s is the baseurl which is being specified within the Config struct or the environment variable
 	url := fmt.Sprintf("%s/api/v3/series", c.config.BaseURL)
 
+	// logging for easier debug
+	log.Printf("[CURATARR] Making a request to: %s", url)
+
 	// create request with context for Timeout
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
+		log.Printf("[CURATARR] Failed to create request to: %v", err)
 		return nil, fmt.Errorf("Creating request: %w", err)
 	}
 
@@ -51,25 +55,35 @@ func (c *SonarrClient) GetAllSeries(ctx context.Context) (json.RawMessage, error
 	req.Header.Set("X-Api-Key", c.config.APIKey)
 	req.Header.Set("Accept", "application/json")
 
-	// execute the request to the api endpoint
+	log.Printf("[CURATARR] Sending GET request")
+
+	// execute the request to the api endpoint and time the request to output if it fails
+	startTime := time.Now()
 	resp, err := c.httpClient.Do(req)
+	duration := time.Since(startTime)
 	if err != nil {
+		log.Printf("[CURATARR] Sending GET request failed after %v: %v", duration, err)
 		return nil, fmt.Errorf("Executing request: %w", err)
 	}
-
 	defer resp.Body.Close()
+
+	log.Printf("[CURATARR] Response received - Status %d %s - Duration: %v", resp.StatusCode, http.StatusText(resp.StatusCode), duration)
 
 	// check for non succes status codes
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
+		log.Printf("[CURATARR] Error in the response body: %s", string(body))
 		return nil, fmt.Errorf("Sonarr returned status %d: %s", resp.StatusCode, string(body))
 	}
 
 	// read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		log.Printf("[CURATARR] Failed to read response body: %v", err)
 		return nil, fmt.Errorf("Reading response: %w", err)
 	}
+
+	log.Printf("[CURATARR] Successfully fetched %d bytes", len(body))
 
 	return body, nil
 }
@@ -115,37 +129,41 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	html := `<!DOCTYPE html> 
-	<html>
-	<head>
-		<title>Sonarr API </title>
-		</head>
-		<body>
-			<h1>Sonarr Series</h1>
-			<button onclick="fetchSeries()">Fetch Series</button>
-			<pre id="output"></pre>
-
-			<script>
-				async function fetchSeries() {
-					const output = document.getElementById('output');
-					output.textContent = 'Loading...';
-
-					try {
-						const response = await fetch('/api/fetch-series');
-						const data = await response.json();
-						output.textContent = JSON.stringify(data, null, 2);
-					} catch (error) {
-						output.textContent = 'Error: ' + error.message;
-					}
-				}
-			</script>
-		</body>
-		</html>`
+<html>
+<head>
+    <title>Sonarr API</title>
+</head>
+<body>
+    <h1>Sonarr Series</h1>
+    <button onclick="fetchSeries()">Fetch Series</button>
+    <pre id="output"></pre>
+    <script>
+        async function fetchSeries() {
+            const output = document.getElementById('output');
+            output.textContent = 'Loading...';
+            try {
+                const response = await fetch('/api/fetch-series');
+                const data = await response.json();
+            
+                const seriesCount = data.length;
+                console.log('[STATS] Total series:', seriesCount);
+                
+                output.textContent = 'Total Series: ' + seriesCount + '\n\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>`
 
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(html))
 }
 
 func handleFetchSeries(w http.ResponseWriter, r *http.Request) {
+	log.Println("GET /api/v1/sync-series - Syncing your Series' from Sonarr into Curatarr")
+
 	// set cors
 	// CORS is ...
 	w.Header().Set("Access-Control-Allow-Origin", "*")

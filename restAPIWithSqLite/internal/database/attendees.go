@@ -100,7 +100,7 @@ func (m *AttendeeModel) GetEventsByAttendee(attendeeId int) ([]*Event, error) {
 	defer cancel()
 
 	query := `
-	SELECT	e.id, e.ownder_id, e.name, e.description, e.date, e.location
+	SELECT	e.id, e.owner_id, e.name, e.description, e.date, e.location
 	FROM events e
 	JOIN attendees a ON e.id = a.event_id
 	WHERE a.user_id = $1
